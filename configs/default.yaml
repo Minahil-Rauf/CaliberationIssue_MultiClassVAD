@@ -1,0 +1,77 @@
+# Frozen protocol for the paper. Do NOT edit (see RUN_GUIDE.md, section 7).
+# Every value that can change a result lives here.
+
+seed: 2026
+
+paths:
+  data_dir: data          # raw downloads, index, mixtures, features (not committed)
+  output_dir: outputs     # runs, tables, figures
+
+audio:
+  sample_rate: 16000
+  clip_seconds: 10.0
+  hop_ms: 10              # one label per 10 ms frame -> 1000 frames per clip
+
+sources:
+  # MUSAN files are split by file into these shares (per kind: speech/music/noise).
+  musan_split: {train: 0.70, val: 0.10, test_in: 0.20}
+  # ESC-50 classes that contain human voice are removed from the noise pool.
+  esc50_exclude: [crying_baby, sneezing, breathing, coughing, laughing, snoring]
+  # Rap is speech-like; hip-hop is removed from the unseen-music pool.
+  gtzan_exclude: [hiphop]
+  min_source_seconds: 1.0
+
+mixing:
+  n_clips: {train: 7200, val: 700, test_in: 1000, test_shift: 1000}
+  event_seconds: [1.0, 4.0]
+  # Target share of events per class (frame shares end up close to these).
+  event_probs: {background: 0.25, speech: 0.50, music: 0.20, speech_music: 0.05}
+  smr_db: [-5, 0, 5, 10, 15]         # speech-to-music ratio for speech+music events
+  speech_level_dbfs: [-28, -18]      # active-speech level
+  music_level_dbfs: [-30, -18]       # music-only events
+  noise_bed_dbfs: [-60, -40]         # noise under the whole clip
+  noise_burst_dbfs: [-40, -22]       # louder noise in some background events
+  noise_burst_prob: 0.5              # share of background events that are noise bursts
+  fade_ms: 10
+
+labels:
+  speech_rel_db: -35      # speech frame active if within 35 dB of the segment's loudest frame
+  speech_abs_dbfs: -55    # ... and above this absolute floor
+  close_gap_ms: 150       # pauses shorter than this stay "active"
+  min_island_ms: 50       # active runs shorter than this are dropped
+  music_abs_dbfs: -60     # music frame active if above this level
+
+features:
+  n_mels: 64
+  n_fft: 512
+  win_length: 400
+  hop_length: 160
+  fmin: 0
+  fmax: 8000
+
+model:
+  channels: [16, 32, 64]
+  freq_pool: [4, 2, 2]
+  gru_hidden: 64
+  dropout: 0.1
+
+training:
+  losses: [ce, weighted_ce, focal, label_smoothing]
+  seeds: [0, 1, 2]
+  batch_size: 32
+  lr: 0.001
+  max_epochs: 20
+  patience: 5             # early stopping on validation macro-F1
+  crop_seconds: 4.0       # random crops for training; evaluation uses full clips
+  focal_gamma: 2.0
+  label_smoothing: 0.1
+  grad_clip: 5.0
+  num_workers: 0
+  torch_threads: 0        # 0 = PyTorch default
+
+evaluation:
+  ece_bins: 15
+  bootstrap_resamples: 1000
+  smoothing_windows: [1, 5, 11, 21]
+  accept_thresholds: [0.5, 0.6, 0.7, 0.8, 0.9, 0.95]
+  speech_threshold: 0.5

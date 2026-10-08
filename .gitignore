@@ -1,0 +1,14 @@
+# Data and large outputs are never committed (see RUN_GUIDE.md, section 7).
+data/
+data_smoke/
+outputs/runs/
+outputs_smoke/
+
+# outputs/tables/ and outputs/figures/ from the REAL run may be committed.
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
