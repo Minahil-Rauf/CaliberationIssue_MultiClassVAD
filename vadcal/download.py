@@ -1,6 +1,18 @@
-"""Resumable dataset downloads (HTTP Range) with mirror fallback, then safe extraction."""
+"""Dataset downloads with mirror fallback and safe extraction.
+
+Default (streaming): a .tar.gz is unpacked while it downloads, so the archive is never
+stored and only one copy of each dataset is on disk. The cost: an interrupted download
+starts that dataset again from zero (each mirror is tried several times automatically).
+
+--no-stream: the archive is saved first (resumable via HTTP Range), then extracted and
+deleted. Needs the archive's size in extra disk space while extracting.
+
+A .zip (ESC-50) cannot be unpacked mid-download, so it always uses the second mode.
+An archive already in data/downloads/ (e.g. downloaded by hand) is always used directly.
+"""
 from __future__ import annotations
 
+import io
 import tarfile
 import zipfile
 from pathlib import Path
@@ -70,6 +82,54 @@ def _download(url: str, dest: Path, chunk: int = 1 << 20, timeout: int = 60) -> 
     part.replace(dest)
 
 
+class _Progress(io.RawIOBase):
+    """Read-only wrapper that reports bytes read to a progress bar."""
+
+    def __init__(self, raw, bar):
+        self._raw, self._bar = raw, bar
+
+    def readable(self) -> bool:
+        return True
+
+    def readinto(self, buffer) -> int:
+        data = self._raw.read(len(buffer))
+        n = len(data)
+        buffer[:n] = data
+        self._bar.update(n)
+        return n
+
+
+def extract_tar_stream(fileobj, dest: Path) -> None:
+    """Extract a (compressed) tar read sequentially from fileobj; nothing is buffered on disk."""
+    dest.mkdir(parents=True, exist_ok=True)
+    with tarfile.open(fileobj=fileobj, mode="r|*") as tf:
+        tf.extractall(dest, filter="data")  # blocks path traversal (Python >= 3.11.4)
+
+
+def _stream_extract(url: str, dest: Path, timeout: int = 60) -> None:
+    with requests.get(url, stream=True, timeout=timeout, allow_redirects=True) as r:
+        r.raise_for_status()
+        r.raw.decode_content = True  # undo any transport compression; leaves the .tar.gz bytes
+        length = r.headers.get("Content-Length")
+        with tqdm(total=int(length) if length else None, unit="B", unit_scale=True,
+                  desc=f"download+extract {Path(url).name}") as bar:
+            extract_tar_stream(_Progress(r.raw, bar), dest)
+
+
+def _try_mirrors(name: str, spec: dict, action, attempts: int = 3) -> None:
+    errors = []
+    for url in spec["urls"]:
+        for attempt in range(1, attempts + 1):
+            print(f"[{name}] {spec['size']} from {url} (attempt {attempt}/{attempts})")
+            try:
+                action(url)
+                return
+            except Exception as e:  # retry, then try the next mirror
+                errors.append(f"{url} (attempt {attempt}): {e}")
+                print(f"[{name}] failed: {e}")
+    raise RuntimeError(f"[{name}] every mirror failed:\n  " + "\n  ".join(errors))
+
+
 def _extract(archive: Path, dest: Path) -> None:
     dest.mkdir(parents=True, exist_ok=True)
     if archive.name.endswith(".zip"):
@@ -85,7 +145,7 @@ def _extract(archive: Path, dest: Path) -> None:
             tf.extractall(dest, filter="data")  # blocks path traversal (Python >= 3.11.4)
 
 
-def fetch(name: str, raw: Path, downloads: Path, keep_archive: bool = False) -> None:
+def fetch(name: str, raw: Path, downloads: Path, stream: bool = True, keep_archive: bool = False) -> None:
     spec = DATASETS[name]
     marker = raw / f".done_{name}"
     if marker.exists():
@@ -93,26 +153,26 @@ def fetch(name: str, raw: Path, downloads: Path, keep_archive: bool = False) -> 
         return
     downloads.mkdir(parents=True, exist_ok=True)
     archive = downloads / spec["archive"]
-    if not archive.exists():
-        errors = []
-        for url in spec["urls"]:
-            print(f"[{name}] downloading {spec['size']} from {url}")
-            try:
-                _download(url, archive)
-                break
-            except Exception as e:  # try the next mirror
-                errors.append(f"{url}: {e}")
-                print(f"[{name}] failed: {e}")
+    manual = (f"\nDownload {spec['archive']} by hand into {downloads} and run this script again "
+              f"(an archive found there is extracted directly).")
+    streamable = spec["archive"].endswith((".tar.gz", ".tgz"))
+    try:
+        if archive.exists():
+            print(f"[{name}] extracting {archive.name} ...")
+            _extract(archive, raw)
+        elif stream and streamable:
+            (downloads / (spec["archive"] + ".part")).unlink(missing_ok=True)  # stale --no-stream leftover
+            _try_mirrors(name, spec, lambda url: _stream_extract(url, raw))
         else:
-            raise RuntimeError(
-                f"[{name}] every mirror failed:\n  " + "\n  ".join(errors)
-                + f"\nDownload {spec['archive']} by hand into {downloads} and run this script again.")
-    print(f"[{name}] extracting {archive.name} ...")
-    _extract(archive, raw)
+            _try_mirrors(name, spec, lambda url: _download(url, archive))
+            print(f"[{name}] extracting {archive.name} ...")
+            _extract(archive, raw)
+    except RuntimeError as e:
+        raise RuntimeError(str(e) + manual) from None
     if not (raw / spec["check"]).exists():
         raise RuntimeError(f"[{name}] expected {raw / spec['check']} after extraction. "
-                           f"Delete {archive} and try again.")
+                           f"Delete it and any {archive.name} in {downloads}, then try again.")
     marker.write_text("ok")
-    if not keep_archive:
+    if archive.exists() and not keep_archive:
         archive.unlink()
     print(f"[{name}] done")
