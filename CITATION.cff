@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite it as below."
+type: software
+title: "Calibration of Multi-Class Voice Activity Detection"
+abstract: >-
+  Code and results for the paper "Confident but Wrong: Calibration of
+  Multi-Class Voice Activity Detection Under Class Imbalance and Domain Shift".
+authors:
+  - family-names: Ijaz
+    given-names: Muhammad
+  - family-names: Rauf
+    given-names: Minahil
+repository-code: "https://github.com/Minahil-Rauf/CaliberationIssue_MultiClassVAD"
+license: MIT
+date-released: 2026-10-10

@@ -138,3 +138,18 @@ Datasets, mixtures, features, model weights and logits are not stored in the rep
 - LibriSpeech, Panayotov et al. 2015, [OpenSLR 12](https://www.openslr.org/12/), CC BY 4.0
 - ESC-50, Piczak 2015, [GitHub](https://github.com/karolpiczak/ESC-50), CC BY-NC 3.0
 - GTZAN, Tzanetakis & Cook 2002, [Hugging Face copy](https://huggingface.co/datasets/marsyas/gtzan), research use
+
+## Citation
+If you use this code or these results, please cite the repository; the details are in [CITATION.cff](CITATION.cff) (GitHub shows them under "Cite this repository").
+
+```bibtex
+@software{ijaz_rauf_2026_vadcal,
+  author = {Ijaz, Muhammad and Rauf, Minahil},
+  title  = {Calibration of Multi-Class Voice Activity Detection},
+  year   = {2026},
+  url    = {https://github.com/Minahil-Rauf/CaliberationIssue_MultiClassVAD}
+}
+```
+
+## Licence
+The code is released under the [MIT licence](LICENSE). The datasets are not part of this repository and keep their own licences, listed above.
