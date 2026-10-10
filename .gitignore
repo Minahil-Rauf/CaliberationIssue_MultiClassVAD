@@ -12,3 +12,6 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
+
+# Local console logs of pipeline runs.
+logs/
