@@ -1,0 +1,19 @@
+\begin{tabular}{llcccc}
+\hline
+ & & \multicolumn{2}{c}{In-domain} & \multicolumn{2}{c}{Shifted} \\
+Loss & Calibration & ECE & Macro-F1 & ECE & Macro-F1 \\
+\hline
+CE & Uncalibrated & 0.010 $\pm$ 0.003 & 0.875 $\pm$ 0.003 & 0.010 $\pm$ 0.004 & 0.878 $\pm$ 0.011 \\
+CE & Temperature scaling & 0.005 $\pm$ 0.003 & 0.875 $\pm$ 0.003 & 0.005 $\pm$ 0.001 & 0.878 $\pm$ 0.011 \\
+CE & Vector scaling & 0.006 $\pm$ 0.001 & 0.875 $\pm$ 0.004 & 0.004 $\pm$ 0.001 & 0.883 $\pm$ 0.004 \\
+Weighted CE & Uncalibrated & 0.011 $\pm$ 0.004 & 0.862 $\pm$ 0.008 & 0.009 $\pm$ 0.005 & 0.863 $\pm$ 0.005 \\
+Weighted CE & Temperature scaling & 0.006 $\pm$ 0.001 & 0.862 $\pm$ 0.008 & 0.003 $\pm$ 0.001 & 0.863 $\pm$ 0.005 \\
+Weighted CE & Vector scaling & 0.007 $\pm$ 0.002 & 0.871 $\pm$ 0.004 & 0.003 $\pm$ 0.001 & 0.879 $\pm$ 0.002 \\
+Focal & Uncalibrated & 0.105 $\pm$ 0.008 & 0.865 $\pm$ 0.003 & 0.112 $\pm$ 0.009 & 0.873 $\pm$ 0.004 \\
+Focal & Temperature scaling & 0.007 $\pm$ 0.002 & 0.865 $\pm$ 0.003 & 0.006 $\pm$ 0.003 & 0.873 $\pm$ 0.004 \\
+Focal & Vector scaling & 0.005 $\pm$ 0.000 & 0.863 $\pm$ 0.004 & 0.006 $\pm$ 0.003 & 0.877 $\pm$ 0.004 \\
+Label smoothing & Uncalibrated & 0.059 $\pm$ 0.007 & 0.866 $\pm$ 0.003 & 0.060 $\pm$ 0.012 & 0.874 $\pm$ 0.008 \\
+Label smoothing & Temperature scaling & 0.016 $\pm$ 0.001 & 0.866 $\pm$ 0.003 & 0.016 $\pm$ 0.007 & 0.874 $\pm$ 0.008 \\
+Label smoothing & Vector scaling & 0.015 $\pm$ 0.001 & 0.867 $\pm$ 0.002 & 0.015 $\pm$ 0.005 & 0.876 $\pm$ 0.006 \\
+\hline
+\end{tabular}
