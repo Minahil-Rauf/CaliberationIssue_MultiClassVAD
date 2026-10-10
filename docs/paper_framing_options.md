@@ -2,7 +2,7 @@
 
 **Project:** Calibration of Multi-Class Voice Activity Detection (ICEET 2026)
 **Authors:** Muhammad Ijaz, Minahil Rauf
-**Based on:** the result tables in `outputs/tables/` (code commit `ee80bb1`) and the full results report, which is kept outside the repository
+**Based on:** the result tables in `outputs/tables/` (code commit `ee80bb1`) and the full results report, [results_report.docx](results_report.docx)
 
 This note explains why the working title no longer fits the results, and sets out five ways the paper could be framed. Each option lists candidate titles, the argument, the evidence behind it, what would have to be written or run, and the objections a reviewer is likely to raise. A recommendation is at the end.
 
