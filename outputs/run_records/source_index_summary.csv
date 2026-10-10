@@ -1,0 +1,13 @@
+split,kind,dataset,files,hours
+test_in,music,musan,132,8.44
+test_in,noise,musan,176,1.24
+test_in,speech,musan,85,11.95
+test_shift,music,gtzan,899,7.5
+test_shift,noise,esc50,1760,2.44
+test_shift,speech,librispeech,2620,5.4
+train,music,musan,462,29.93
+train,noise,musan,615,4.5
+train,speech,musan,298,42.47
+val,music,musan,66,4.25
+val,noise,musan,88,0.48
+val,speech,musan,43,6.03

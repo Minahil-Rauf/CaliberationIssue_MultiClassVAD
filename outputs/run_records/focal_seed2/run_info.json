@@ -1,0 +1,18 @@
+{
+  "loss": "focal",
+  "seed": 2,
+  "best_epoch": 14,
+  "best_val_macro_f1": 0.8820774372417458,
+  "epochs_run": 20,
+  "n_params": 85604,
+  "device": "cuda",
+  "smoke": false,
+  "git_commit": "ee80bb1",
+  "v_python": "3.12.11",
+  "v_numpy": "2.5.3",
+  "v_scipy": "1.18.1",
+  "v_torch": "2.14.1+cu126",
+  "v_librosa": "1.0.0",
+  "v_soundfile": "0.14.0",
+  "v_pandas": "3.0.6"
+}
