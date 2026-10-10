@@ -57,6 +57,36 @@ Labelled 10 s mixtures are generated from public corpora, so every frame label i
 - **Caveat on ECE intervals:** ECE is biased upward on finite samples, so its percentile interval can lie above the point estimate. Read it as a measure of spread, and say so in the paper.
 - **Absent classes:** per-class F1 is NaN when a class never occurs in the labels; macro-F1 averages only the classes that do occur.
 
+## Results
+The full protocol has been run (12 runs, commit `ee80bb1`). Values are mean ± std over 3 seeds, uncalibrated outputs; lower ECE is better.
+
+| Loss | In-domain macro-F1 | In-domain ECE | Shifted macro-F1 | Shifted ECE |
+|---|---|---|---|---|
+| CE | 0.875 ± 0.003 | 0.010 ± 0.003 | 0.878 ± 0.011 | 0.010 ± 0.004 |
+| Weighted CE | 0.862 ± 0.008 | 0.011 ± 0.004 | 0.863 ± 0.005 | 0.009 ± 0.005 |
+| Focal (γ=2) | 0.865 ± 0.003 | 0.105 ± 0.008 | 0.873 ± 0.004 | 0.112 ± 0.009 |
+| Label smoothing (0.1) | 0.866 ± 0.003 | 0.059 ± 0.007 | 0.874 ± 0.008 | 0.060 ± 0.012 |
+
+What the numbers show:
+- **E1:** the CE baseline is already well calibrated (ECE about 0.01 on both test sets). speech+music is by far the hardest class for accuracy (F1 0.71 in-domain, 0.74 shifted, against 0.90–0.95 for the other classes), but its classwise-ECE (0.009 / 0.013) is not clearly worse than the other classes (0.006–0.014).
+- **E2:** focal loss and label smoothing raise ECE about ten-fold and six-fold over CE, without improving macro-F1 or speech+music F1. Weighted CE keeps top-label ECE but raises classwise-ECE and lowers macro-F1.
+- **E3:** temperature scaling fitted on the validation set brings every loss to ECE below 0.02 on both test sets (focal: 0.105 → 0.007 in-domain, 0.112 → 0.006 shifted), so the fix transfers to the unseen sources. Vector scaling gives the lowest classwise-ECE.
+- **E4:** median smoothing up to 21 frames adds about 0.004 macro-F1 and leaves ECE unchanged for CE (0.010 at every window).
+- **E5:** for CE, the accuracy of frames accepted at confidence ≥ τ stays within about 0.01 of the confidence claimed.
+- **Domain shift:** the shifted test set is not harder than the in-domain one here; macro-F1 and ECE are about equal on both.
+
+Full tables, confidence intervals and paired tests are in [outputs/tables/](outputs/tables); figures and LaTeX tables are in [outputs/figures/](outputs/figures).
+
+### Reference run
+| Item | Value |
+|---|---|
+| Machine | Windows 11, NVIDIA GeForce RTX 4060 Laptop GPU (8 GB) |
+| Software | Python 3.12.11, PyTorch 2.14.1 + CUDA 12.6; all versions in [requirements-lock.txt](requirements-lock.txt) |
+| Training | all 12 runs on the GPU, about 19 s per epoch, 20 min in total with the four losses running at the same time |
+| Records | [outputs/run_records/](outputs/run_records): per-epoch training log and `run_info.json` of each run, class shares of the mixtures, files and hours per split |
+
+GPU training is not bit-for-bit deterministic, so a new run reproduces these numbers to within the seed spread, not exactly.
+
 ## Pipeline
 | Stage | Script | Output |
 |---|---|---|
@@ -89,8 +119,11 @@ vadcal/         library code: data, labels, mixing, features, model, losses, tra
                 metrics, bootstrap, calibration, smoothing, experiments, plots
 scripts/        the 7 numbered pipeline stages
 tests/          metric correctness, label/mixing logic, split leakage
+outputs/        tables/, figures/ and run_records/ of the full run (results for the paper)
 run_pipeline.py runs every stage in order
+requirements.txt        minimum versions; requirements-lock.txt is the exact environment used
 ```
+Datasets, mixtures, features, model weights and logits are not stored in the repository; the pipeline regenerates them.
 
 ## Limitations
 - **Synthetic mixtures:** exact labels, but cleaner than real broadcast audio.

@@ -1,6 +1,6 @@
 # Run guide
 
-This guide is for the team member who runs the experiments. Follow the steps in order. The code has **not been run yet**, so the smoke test in step 2 is mandatory: it finds problems in minutes instead of hours.
+This guide is for the team member who runs the experiments. Follow the steps in order. The smoke test in step 2 is mandatory on a new machine: it finds problems in minutes instead of hours. The results of the reference run are in `outputs/` (see the README).
 
 **Deadline:** results are needed by 11 Oct 2026, because the paper is due 12 Oct.
 
