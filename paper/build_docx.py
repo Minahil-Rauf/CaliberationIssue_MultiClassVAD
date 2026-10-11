@@ -23,9 +23,11 @@ HERE = Path(__file__).resolve().parent
 TEMPLATE = HERE / "ICEET-2026-Template.docx"
 OUT = HERE / "ICEET2026_Right_but_Unsure.docx"
 
+AFFILIATION = ["School of Electrical Engineering and Computer Science (SEECS)",
+               "National University of Sciences and Technology (NUST)", "Islamabad, Pakistan"]
 AUTHORS = [  # (name, lines below the name); bracketed lines are highlighted for the authors to fill
-    ("Minahil Rauf", ["[Department]", "[University / Organization]", "[City, Country]", "[email address]"]),
-    ("Muhammad Ijaz", ["[Department]", "[University / Organization]", "[City, Country]", "[email address]"]),
+    ("Minahil Rauf", AFFILIATION),
+    ("Muhammad Ijaz", AFFILIATION),
 ]
 
 TEXT_W_PT, COL_W_PT = 521.3, 252.0      # full text width and one column (template margins)

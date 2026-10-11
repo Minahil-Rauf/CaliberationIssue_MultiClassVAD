@@ -7,8 +7,8 @@
 - `make_figures.py`: builds every figure in `figures/` from `../outputs/tables/*.csv`. It also writes `figures/key_numbers.txt`, which lists every number quoted in the text.
 
 ## ICEET Word template version
-- `ICEET2026_Right_but_Unsure.docx`: the same paper in the official ICEET 2026 Word template (`ICEET-2026-Template.docx`). Authors are Minahil Rauf and Muhammad Ijaz. **Fill in the yellow-highlighted affiliation lines** (department, organization, city/country, email) and remove the highlight.
-- `ICEET2026_Right_but_Unsure.pdf`: a preview of the Word file, rendered by LibreOffice. After filling the affiliations, export the final PDF from Word (File > Save As > PDF).
+- `ICEET2026_Right_but_Unsure.docx`: the same paper in the official ICEET 2026 Word template (`ICEET-2026-Template.docx`). Authors: Minahil Rauf and Muhammad Ijaz, SEECS, NUST, Islamabad.
+- `ICEET2026_Right_but_Unsure.pdf`: a preview of the Word file, rendered by LibreOffice. For the final submission you can also export the PDF from Word (File > Save As > PDF).
 - `build_docx.py` regenerates the Word file from `main.tex`, `main.bbl`, `figures/*.png` and the template: `python paper/build_docx.py`. If the LaTeX changes, first refresh `main.bbl` with `tectonic --keep-intermediates main.tex`.
 
 ## Rebuild
