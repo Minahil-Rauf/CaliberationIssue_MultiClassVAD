@@ -587,6 +587,13 @@ def main() -> None:
     work = Path(tempfile.mkdtemp())
     with zipfile.ZipFile(TEMPLATE) as z:
         z.extractall(work)
+    # The template's first-page header says "11th"; ICEET 2026 is the 12th conference.
+    # The number is stored as two runs "1" + "1" before the superscript "th".
+    hdr = work / "word" / "header3.xml"
+    h = hdr.read_text(encoding="utf-8")
+    th = h.index("<w:t>th</w:t>")
+    one = h.rindex("<w:t>1</w:t>", 0, th)
+    hdr.write_text(h[:one] + "<w:t>2</w:t>" + h[one + len("<w:t>1</w:t>"):], encoding="utf-8")
     doc_path = work / "word" / "document.xml"
     doc = doc_path.read_text(encoding="utf-8")
     head, rest = doc.split("<w:body>")
