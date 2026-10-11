@@ -1,0 +1,38 @@
+test_in    raw ce               macroF1=0.875±0.003 spmuF1=0.710±0.018 ECE=0.0104±0.0031 cwECE=0.0085±0.0026
+test_in    raw weighted_ce      macroF1=0.862±0.008 spmuF1=0.680±0.023 ECE=0.0109±0.0040 cwECE=0.0154±0.0008
+test_in    raw focal            macroF1=0.865±0.003 spmuF1=0.686±0.007 ECE=0.1049±0.0084 cwECE=0.0538±0.0047
+test_in    raw label_smoothing  macroF1=0.866±0.003 spmuF1=0.688±0.011 ECE=0.0588±0.0066 cwECE=0.0353±0.0010
+test_in    ts  ce               macroF1=0.875±0.003 spmuF1=0.710±0.018 ECE=0.0053±0.0034 cwECE=0.0076±0.0024
+test_in    ts  weighted_ce      macroF1=0.862±0.008 spmuF1=0.680±0.023 ECE=0.0060±0.0008 cwECE=0.0150±0.0013
+test_in    ts  focal            macroF1=0.865±0.003 spmuF1=0.686±0.007 ECE=0.0066±0.0018 cwECE=0.0104±0.0026
+test_in    ts  label_smoothing  macroF1=0.866±0.003 spmuF1=0.688±0.011 ECE=0.0157±0.0009 cwECE=0.0117±0.0024
+test_in    vs  ce               macroF1=0.875±0.004 spmuF1=0.707±0.020 ECE=0.0056±0.0010 cwECE=0.0049±0.0008
+test_in    vs  weighted_ce      macroF1=0.871±0.004 spmuF1=0.706±0.012 ECE=0.0070±0.0019 cwECE=0.0053±0.0006
+test_in    vs  focal            macroF1=0.863±0.004 spmuF1=0.672±0.014 ECE=0.0053±0.0003 cwECE=0.0052±0.0006
+test_in    vs  label_smoothing  macroF1=0.867±0.002 spmuF1=0.690±0.006 ECE=0.0151±0.0005 cwECE=0.0088±0.0002
+test_shift raw ce               macroF1=0.878±0.011 spmuF1=0.740±0.022 ECE=0.0096±0.0045 cwECE=0.0112±0.0063
+test_shift raw weighted_ce      macroF1=0.863±0.005 spmuF1=0.701±0.013 ECE=0.0093±0.0047 cwECE=0.0224±0.0021
+test_shift raw focal            macroF1=0.873±0.004 spmuF1=0.730±0.009 ECE=0.1122±0.0090 cwECE=0.0576±0.0052
+test_shift raw label_smoothing  macroF1=0.874±0.008 spmuF1=0.736±0.005 ECE=0.0602±0.0117 cwECE=0.0371±0.0003
+test_shift ts  ce               macroF1=0.878±0.011 spmuF1=0.740±0.022 ECE=0.0051±0.0014 cwECE=0.0112±0.0059
+test_shift ts  weighted_ce      macroF1=0.863±0.005 spmuF1=0.701±0.013 ECE=0.0029±0.0014 cwECE=0.0223±0.0022
+test_shift ts  focal            macroF1=0.873±0.004 spmuF1=0.730±0.009 ECE=0.0060±0.0034 cwECE=0.0152±0.0024
+test_shift ts  label_smoothing  macroF1=0.874±0.008 spmuF1=0.736±0.005 ECE=0.0161±0.0068 cwECE=0.0146±0.0071
+test_shift vs  ce               macroF1=0.883±0.004 spmuF1=0.751±0.003 ECE=0.0036±0.0012 cwECE=0.0057±0.0014
+test_shift vs  weighted_ce      macroF1=0.879±0.002 spmuF1=0.740±0.005 ECE=0.0028±0.0010 cwECE=0.0065±0.0011
+test_shift vs  focal            macroF1=0.877±0.004 spmuF1=0.732±0.013 ECE=0.0062±0.0027 cwECE=0.0077±0.0015
+test_shift vs  label_smoothing  macroF1=0.876±0.006 spmuF1=0.739±0.001 ECE=0.0146±0.0053 cwECE=0.0101±0.0022
+
+T ce               1.064±0.036
+T weighted_ce      1.066±0.063
+T focal            0.529±0.017
+T label_smoothing  0.684±0.017
+
+coverage test_in    raw tau=0.9 ce=80.6%  weighted_ce=78.3%  focal=34.9%  label_smoothing=59.1%
+coverage test_in    raw tau=0.95 ce=72.6%  weighted_ce=69.3%  focal=9.2%  label_smoothing=0.9%
+coverage test_in    ts  tau=0.9 ce=79.0%  weighted_ce=76.5%  focal=74.9%  label_smoothing=83.7%
+coverage test_in    ts  tau=0.95 ce=70.1%  weighted_ce=66.4%  focal=63.5%  label_smoothing=75.4%
+coverage test_shift raw tau=0.9 ce=79.3%  weighted_ce=76.4%  focal=30.4%  label_smoothing=55.5%
+coverage test_shift raw tau=0.95 ce=70.5%  weighted_ce=66.5%  focal=6.7%  label_smoothing=1.2%
+coverage test_shift ts  tau=0.9 ce=77.5%  weighted_ce=74.4%  focal=73.2%  label_smoothing=82.7%
+coverage test_shift ts  tau=0.95 ce=67.7%  weighted_ce=63.2%  focal=61.0%  label_smoothing=73.2%
