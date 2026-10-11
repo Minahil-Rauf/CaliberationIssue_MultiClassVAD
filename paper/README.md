@@ -2,7 +2,7 @@
 
 *Right but Unsure: How Focal Loss and Label Smoothing Miscalibrate Multi-Class Voice Activity Detection*
 
-- `main.pdf`: the compiled paper (IEEE conference format, 5 pages, no author block yet)
+- `main.pdf`: the compiled paper (IEEE conference format, 6 pages, no author block yet)
 - `main.tex`, `refs.bib`: LaTeX source (IEEEtran). Every reference was checked against its arXiv, Crossref or publisher record.
 - `make_figures.py`: builds every figure in `figures/` from `../outputs/tables/*.csv`. It also writes `figures/key_numbers.txt`, which lists every number quoted in the text.
 
