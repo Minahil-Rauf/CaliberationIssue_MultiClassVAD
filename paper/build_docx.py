@@ -26,8 +26,8 @@ OUT = HERE / "ICEET2026_Right_but_Unsure.docx"
 AFFILIATION = ["School of Electrical Engineering and Computer Science (SEECS)",
                "National University of Sciences and Technology (NUST)", "Islamabad, Pakistan"]
 AUTHORS = [  # (name, lines below the name); bracketed lines are highlighted for the authors to fill
-    ("Minahil Rauf", AFFILIATION),
-    ("Muhammad Ijaz", AFFILIATION),
+    ("Minahil Rauf", AFFILIATION + ["mrauf.bese23seecs@seecs.edu.pk"]),
+    ("Muhammad Ijaz", AFFILIATION + ["muhammad.bese23seecs@seecs.edu.pk"]),
 ]
 
 TEXT_W_PT, COL_W_PT = 521.3, 252.0      # full text width and one column (template margins)
